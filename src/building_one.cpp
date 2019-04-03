@@ -68,6 +68,9 @@ double BuildingOne::total_worth() const {
 }
 
 DestlerDoubloon BuildingOne::withdraw(unsigned long long id) {
+    if(vault_.size() == 0){
+        throw DDException("the vault is empty!");
+    }
     withdrawn_ids_.emplace(id);
     try{
         DestlerDoubloon dd = std::move(vault_.at(id));
