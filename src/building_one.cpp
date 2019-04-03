@@ -10,19 +10,19 @@ BuildingOne::BuildingOne():
 }
 
 void BuildingOne::bull_market(double value) {
-    for(auto i : vault_){
+    for(auto &i : vault_){
         i.second.decrease_value(value);
     }
 }
 
 void BuildingOne::bear_market(double value) {
-    for(auto i : vault_){
+    for(auto &i : vault_){
         i.second.increase_value(value);
     }
 }
 
 void BuildingOne::deposit(DestlerDoubloon &&dd) {
-    vault_.emplace(make_pair(dd.id(), dd));
+    vault_.emplace(std::make_pair(dd.id(), std::move(dd)));
     //adjust wallet
     withdrawn_ids_.erase(dd.id());
 }
@@ -32,7 +32,7 @@ void BuildingOne::destroy(unsigned long long id) {
     if(i != vault_.end()){
         vault_.erase(i);
     }else{
-        throw DDException;
+        throw DDException("DD: 0x" + std::to_string(id) + " not in vault!");
     }
 }
 
@@ -40,14 +40,14 @@ const DestlerDoubloon& BuildingOne::doubloon(unsigned long long id) const {
     try{
         return vault_.at(id);
     }catch(std::out_of_range e){
-        throw DDException;
+        throw DDException("DD: 0x" + std::to_string(id) + " not in vault!");
     }
 }
 
 void BuildingOne::mint(unsigned int num_doubloons) {
-    for(int i = 0; i < num_doubloons; i++){
-        DestlerDoubloon dd(rng_.rand(),1);
-        vault_.emplace(make_pair(dd.id(), dd));
+    for(unsigned int i = 0; i < num_doubloons; i++){
+        unsigned long long id = rng_.rand();
+        vault_.emplace(std::make_pair(id, DestlerDoubloon(id,1)));
     }
 }
 
@@ -57,7 +57,7 @@ size_t BuildingOne::num_doubloons() const {
 
 double BuildingOne::total_worth() const {
     double val = 0;
-    for(auto i : vault_){
+    for(auto &i : vault_){
         val += i.second.value();
     }
     return val;
@@ -66,12 +66,18 @@ double BuildingOne::total_worth() const {
 DestlerDoubloon BuildingOne::withdraw(unsigned long long id) {
     //adjust wallet
     withdrawn_ids_.emplace(id);
-    destroy(id);
+    try{
+        DestlerDoubloon dd = std::move(vault_.at(id));
+        destroy(id);
+        return dd;
+    }catch(std::out_of_range e){
+        throw DDException("DD: 0x" + std::to_string(id) + " not in vault!");
+    }
 }
 
 std::ostream& operator<<(std::ostream &os, const BuildingOne &b1) {
-    for(auto i : vault_){
-        os << i.second << endl;
+    for(auto &i : b1.vault_){
+        os << i.second << std::endl;
     }
     return os;
 }

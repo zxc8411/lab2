@@ -7,7 +7,10 @@
 using std::cout;
 using std::endl;
 
-DestlerDoubloon::DestlerDoubloon(DestlerDoubloon &&other){
+bool DestlerDoubloon::DDEBUG = false;
+
+DestlerDoubloon::DestlerDoubloon(DestlerDoubloon &&other):
+    id_(other.id()), value_(other.value()) {
     if(DDEBUG){
         cout << this << " moved from " << other << "!" << endl;
     }
@@ -31,11 +34,11 @@ bool DestlerDoubloon::operator==(const DestlerDoubloon &other) const {
 }
 
 bool DestlerDoubloon::operator<(const DestlerDoubloon &other) const {
-    return id_ < other.id_;
+    return id_.to_ullong() < other.id();
 }
 
 unsigned long long DestlerDoubloon::id() const {
-    return id_;
+    return id_.to_ullong();
 }
 
 double DestlerDoubloon::value() const {
