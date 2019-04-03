@@ -150,6 +150,6 @@ void TheLoop::main_loop() {
         wallet_.pop_front();
     }
     //display the vault statistics
-    cout << "doubloons in vault: " << b1_.num_doubloons() << "\n";
+    cout << "doubloons in vault: " << std::dec << b1_.num_doubloons() << "\n";
     cout << "total worth: " << b1_.total_worth() << endl;
 }

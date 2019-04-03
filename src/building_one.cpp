@@ -3,6 +3,7 @@
 //
 
 #include "building_one.h"
+#include <iomanip>
 
 BuildingOne::BuildingOne():
     rng_(SEED), vault_(), withdrawn_ids_(){
@@ -31,7 +32,9 @@ void BuildingOne::destroy(unsigned long long id) {
     if(i != vault_.end()){
         vault_.erase(i);
     }else{
-        throw DDException("DD: 0x" + std::to_string(id) + " not in vault!");
+        std::stringstream ss;
+        ss << std::hex << std::setw(16) << std::uppercase << std::setfill('0') << id << std::setfill(' ');
+        throw DDException("DD: 0x" + ss.str() + " not in vault!");
     }
 }
 
@@ -39,7 +42,9 @@ const DestlerDoubloon& BuildingOne::doubloon(unsigned long long id) const {
     try{
         return vault_.at(id);
     }catch(std::out_of_range e){
-        throw DDException("DD: 0x" + std::to_string(id) + " not in vault!");
+        std::stringstream ss;
+        ss << std::hex << std::setw(16) << std::uppercase << std::setfill('0') << id << std::setfill(' ');
+        throw DDException("DD: 0x" + ss.str() + " not in vault!");
     }
 }
 
@@ -69,7 +74,9 @@ DestlerDoubloon BuildingOne::withdraw(unsigned long long id) {
         destroy(id);
         return dd;
     }catch(std::out_of_range e){
-        throw DDException("DD: 0x" + std::to_string(id) + " not in vault!");
+        std::stringstream ss;
+        ss << std::hex << std::setw(16) << std::uppercase << std::setfill('0') << id << std::setfill(' ');
+        throw DDException("DD: 0x" + ss.str() + " not in vault!");
     }
 }
 
