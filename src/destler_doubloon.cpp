@@ -3,6 +3,7 @@
 //
 
 #include "destler_doubloon.h"
+#include <iomanip>
 
 using std::cout;
 using std::endl;
@@ -57,6 +58,6 @@ void DestlerDoubloon::decrease_value(double value) {
 }
 
 std::ostream& operator<<(std::ostream &os, const DestlerDoubloon &dd) {
-    os << "DD: 0x" << dd.id_ << ", value: " << dd.value_ << endl;
+    os << "DD: 0x" << std::hex << std::setw(16) << std::uppercase << std::setfill('0') << dd.id_.to_ulong() << std::setfill(' ') << ", value: " << dd.value_;
     return os;
 }

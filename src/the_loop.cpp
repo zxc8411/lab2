@@ -37,7 +37,79 @@ TheLoop::TheLoop(istream& is, bool std_in) :
              "withdraw id: withdraw a doubloon from building 1 vault (into back of wallet)\n";
     };
 
-    // TODO implement lambda expressions for remaining commands here
+    commands_["debug"] = []() {
+        DestlerDoubloon::DDEBUG = !DestlerDoubloon::DDEBUG;
+    };
+
+    commands_["deposit"] = [this](){
+        if(wallet_.size() != 0){
+            b1_.deposit(std::move(wallet_.front()));
+            wallet_.pop_front();
+        }else{
+            cout << "Wallet is empty!\n";
+        }
+    };
+
+    commands_["doubloon"] = [this](){
+        unsigned long long id;
+        in_ >> std::hex >> id;
+        try{
+            cout << b1_.doubloon(id) << "\n";
+        }catch(DDException e){
+            cout << e.what() << "\n";
+        }
+    };
+
+    commands_["fedora"] = [this](){
+        string num;
+        in_ >> num;
+        b1_.bear_market(std::stod(num));
+    };
+
+    commands_["gun"] = [this](){
+        unsigned long long id;
+        in_ >> std::hex >> id;
+        try{
+            b1_.destroy(id);
+        }catch(DDException e){
+            cout << e.what() << "\n";
+        }
+
+    };
+
+    commands_["ritchie"] = [this](){
+        string num;
+        in_ >> num;
+        b1_.bull_market(std::stod(num));
+    };
+
+    commands_["sos"] = [this](){
+        string num;
+        in_ >> num;
+        b1_.mint(std::stoul(num));
+    };
+
+    commands_["vault"] = [this](){
+        cout << b1_;
+    };
+
+    commands_["wallet"] = [this](){
+        for(auto i = wallet_.begin(); i != wallet_.end(); i++){
+            cout << *i << "\n";
+        }
+    };
+
+    commands_["withdraw"] = [this](){
+        unsigned long long id;
+        in_ >> std::hex >> id;
+        try{
+            wallet_.push_back(b1_.withdraw(id));
+        }catch(DDException e){
+            cout << e.what() << "\n";
+        }
+
+    };
+
 }
 
 void TheLoop::main_loop() {
@@ -70,7 +142,14 @@ void TheLoop::main_loop() {
         }
     }
 
-    // TODO move any Doubloons in wallet back to the vault
 
-    // TODO display the vault statistics
+    // move any Doubloons in wallet back to the vault
+    cout << "returning doubloons in wallet to bank!\n";
+    while(wallet_.size() != 0){
+        b1_.deposit(std::move(wallet_.front()));
+        wallet_.pop_front();
+    }
+    //display the vault statistics
+    cout << "doubloons in vault: " << b1_.num_doubloons() << "\n";
+    cout << "total worth: " << b1_.total_worth() << endl;
 }

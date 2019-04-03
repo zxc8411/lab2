@@ -5,25 +5,24 @@
 #include "building_one.h"
 
 BuildingOne::BuildingOne():
-    rng_(), vault_(), withdrawn_ids_(){
+    rng_(SEED), vault_(), withdrawn_ids_(){
 
 }
 
 void BuildingOne::bull_market(double value) {
     for(auto &i : vault_){
-        i.second.decrease_value(value);
+        i.second.increase_value(value);
     }
 }
 
 void BuildingOne::bear_market(double value) {
     for(auto &i : vault_){
-        i.second.increase_value(value);
+        i.second.decrease_value(value);
     }
 }
 
 void BuildingOne::deposit(DestlerDoubloon &&dd) {
     vault_.emplace(std::make_pair(dd.id(), std::move(dd)));
-    //adjust wallet
     withdrawn_ids_.erase(dd.id());
 }
 
@@ -64,7 +63,6 @@ double BuildingOne::total_worth() const {
 }
 
 DestlerDoubloon BuildingOne::withdraw(unsigned long long id) {
-    //adjust wallet
     withdrawn_ids_.emplace(id);
     try{
         DestlerDoubloon dd = std::move(vault_.at(id));
@@ -77,7 +75,7 @@ DestlerDoubloon BuildingOne::withdraw(unsigned long long id) {
 
 std::ostream& operator<<(std::ostream &os, const BuildingOne &b1) {
     for(auto &i : b1.vault_){
-        os << i.second << std::endl;
+        os << i.second << "\n";
     }
     return os;
 }
