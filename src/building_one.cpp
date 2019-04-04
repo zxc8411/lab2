@@ -51,7 +51,7 @@ const DestlerDoubloon& BuildingOne::doubloon(unsigned long long id) const {
 void BuildingOne::mint(unsigned int num_doubloons) {
     for(unsigned int i = 0; i < num_doubloons; i++){
         unsigned long long id = rng_.rand();
-        vault_.emplace(std::make_pair(id, DestlerDoubloon(id,1)));
+        vault_.emplace(id, DestlerDoubloon(id,1));
     }
 }
 

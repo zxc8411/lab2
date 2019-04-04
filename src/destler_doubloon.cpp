@@ -11,22 +11,24 @@ using std::endl;
 bool DestlerDoubloon::DDEBUG = false;
 
 DestlerDoubloon::DestlerDoubloon(DestlerDoubloon &&other):
-    id_(other.id()), value_(other.value()) {
+    id_(0), value_(0) {
+    std::swap(id_, other.id_);
+    std::swap(value_, other.value_);
     if(DDEBUG){
-        cout << this << " moved from " << other << "!" << endl;
+        cout << *this << " moved from " << other << "!" << endl;
     }
 }
 
 DestlerDoubloon::DestlerDoubloon(unsigned long long id, double value):
     id_(id), value_(value) {
         if(DDEBUG){
-            cout << this << " being created!" << endl;
+            cout << *this << " being created!" << endl;
         }
 }
 
 DestlerDoubloon::~DestlerDoubloon() {
     if(DDEBUG){
-        cout << this << " being destroyed!" << endl;
+        cout << *this << " being destroyed!" << endl;
     }
 }
 
