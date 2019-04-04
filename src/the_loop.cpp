@@ -144,7 +144,9 @@ void TheLoop::main_loop() {
 
 
     // move any Doubloons in wallet back to the vault
-    cout << "returning doubloons in wallet to bank!\n";
+    if(wallet_.size() > 0) {
+        cout << "returning doubloons in wallet to bank!\n";
+    }
     while(wallet_.size() != 0){
         b1_.deposit(std::move(wallet_.front()));
         wallet_.pop_front();
