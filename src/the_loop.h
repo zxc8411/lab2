@@ -4,6 +4,7 @@
 #include <deque>
 #include <functional>
 #include <iostream>
+#include <memory>
 
 #include "building_one.h"
 
@@ -37,7 +38,7 @@ private:
     BuildingOne b1_;
 
     /** a wallet to store doubloons from the vault */
-    std::deque<DestlerDoubloon> wallet_;
+    std::deque<std::unique_ptr<DestlerDoubloon>> wallet_;
 
     /** a map of command strings to lambda expressions to call when
      * invoking the command. */

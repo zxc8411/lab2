@@ -2,6 +2,7 @@
 #define BUILDING_ONE_H
 
 #include <string>
+#include <memory>
 #include <unordered_map>
 #include <unordered_set>
 #include "dd_exception.h"
@@ -44,7 +45,7 @@ public:
      *
      * @param dd the doubloon to add
      */
-    void deposit(DestlerDoubloon&& dd);
+    void deposit(std::unique_ptr<DestlerDoubloon> dd);
 
     /**
      * Destroy a doubloon in the vault.
@@ -91,7 +92,7 @@ public:
      * @throws DDException if the doubloon is not in the vault
      * @return the doubloon
      */
-    DestlerDoubloon withdraw(unsigned long long id);
+    std::unique_ptr<DestlerDoubloon> withdraw(unsigned long long id);
 
     /**
      * Sends all the doubloons in the vault, to the output stream, in the

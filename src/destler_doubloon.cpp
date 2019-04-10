@@ -10,15 +10,6 @@ using std::endl;
 
 bool DestlerDoubloon::DDEBUG = false;
 
-DestlerDoubloon::DestlerDoubloon(DestlerDoubloon &&other):
-    id_(0), value_(0) {
-    std::swap(id_, other.id_);
-    std::swap(value_, other.value_);
-    if(DDEBUG){
-        cout << *this << " moved from " << other << "!" << endl;
-    }
-}
-
 DestlerDoubloon::DestlerDoubloon(unsigned long long id, double value):
     id_(id), value_(value) {
         if(DDEBUG){

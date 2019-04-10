@@ -41,7 +41,7 @@ public:
      *
      * @param other an rvalue reference to be moved on
      */
-    DestlerDoubloon(DestlerDoubloon&& other);
+    DestlerDoubloon(DestlerDoubloon&& other) = delete;
 
     /**
      * Move assignment is forbidden by all.
