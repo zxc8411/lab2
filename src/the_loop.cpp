@@ -95,7 +95,7 @@ TheLoop::TheLoop(istream& is, bool std_in) :
 
     commands_["wallet"] = [this](){
         for(auto i = wallet_.begin(); i != wallet_.end(); i++){
-            cout << *i << "\n";
+            cout << **i << "\n";
         }
     };
 

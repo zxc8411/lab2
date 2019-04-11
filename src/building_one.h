@@ -112,7 +112,7 @@ private:
     RNG rng_;
 
     /** the vault of doubloons */
-    std::unordered_map<unsigned long long, DestlerDoubloon> vault_;
+    std::unordered_map<unsigned long long, std::unique_ptr<DestlerDoubloon>> vault_;
 
     /** id's of doubloons that are currently withdrawn to the wallet */
     std::unordered_set<unsigned long long> withdrawn_ids_;
